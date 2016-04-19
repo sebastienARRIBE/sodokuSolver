@@ -46,6 +46,8 @@ public class Grid implements Observer {
 		this.initializePossibilities();
 
 	}
+	
+	//TODO make lines rows and squares more generic! (code duplication)
 
 	private void instantiateLines() {
 		// TODO make something cleaner and faster
@@ -83,6 +85,7 @@ public class Grid implements Observer {
 	}
 
 	private void instantiateSquares() {
+		// TODO make something cleaner and faster
 		this.squares = new ArrayList<NineCell>();
 		NineCell square = new NineCell();
 		for (int squareLine = 1; squareLine <= 7; squareLine = squareLine + 3) {
@@ -114,7 +117,7 @@ public class Grid implements Observer {
 	}
 
 	private Cell getCell(Cell cell) {
-		// /!\ we get the cell at the same coordiantes than the parameter
+		// /!\ we get the cell at the same coordinates than the parameter
 		// but it can be IN A DIFFERENT GRID!!!!
 		return this.getCell(cell.getLine(), cell.getRow());
 	}
@@ -160,7 +163,9 @@ public class Grid implements Observer {
 
 	public void solve() {
 		this.initializePossibilities();
-		this.backTracking();
+		if (!this.backTracking()){
+			System.out.println("this sudoku has no solution");
+		}
 	}
 
 	private boolean backTracking() {
@@ -169,11 +174,8 @@ public class Grid implements Observer {
 		} else if (this.findEmptyCell() == null) {// null means no empty cell
 
 			System.out.println("SOLVED!!!");
-
 			this.display();
-			System.out.println();
-			System.out.println();
-
+			
 			return true;
 		} else {
 			Cell emptyCell = this.findEmptyCell();
@@ -201,9 +203,9 @@ public class Grid implements Observer {
 	}
 
 	private Cell findEmptyCell() {
-		// TODO find a way to avoid the return null
-		// so it changes the way the full grid is detected in Grid.backtracking()
-		
+		// We keep the return null in the case where there is no empty cell because
+		// 1) that is the purpose of null
+		// 2) no better alternative has been found (null Object DP, returning an empty collection, annotations
 
 		Cell emptyCell = null;
 		for (Cell cell : this.cells) {

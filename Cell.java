@@ -4,8 +4,6 @@ import java.util.LinkedHashSet;
 import java.util.Observable;
 import java.util.Set;
 
-//TODO make lines rows and squares more generic!
-
 public class Cell extends Observable {
 	private int line, row;
 	private Set<Integer> possibilities;
@@ -37,25 +35,23 @@ public class Cell extends Observable {
 		}
 	}
 
-	public synchronized boolean takeOutCellPossibility(int possibility) {
+	public synchronized void takeOutCellPossibility(int possibility) {
 
-		boolean consistentCell = true;
 		if (this.possibilities.remove(possibility)) {
 			if (this.possibilities.size() == 0) {
 				//TODO should there be a notifyObservers() ?
-				consistentCell = false;
+				
 			} else if (this.possibilities.size() == 1) {
 				this.setChanged();
-				// TODO check arguments
 				this.notifyObservers();
 			}
 		}
-		return consistentCell;
+		
 	}
 
 		public synchronized void setOnePossibility(int possibility) {
 		if (this.possibilities.size() <= 1) {
-			System.err.println("ERROR @ setOnePossibility");
+			System.err.println("ERROR @ .setOnePossibility()");
 		}
 
 		this.possibilities.clear();
